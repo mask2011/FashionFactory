@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - e - Fashion</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon.png">
+
+
+    <link href="~/Content/style.min.css" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+
+<body style="background-color:#edf1f5;">
+    <div class="container bg-login">
+        @RenderBody()
+    </div>
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/perfect-scrollbar.jquery.min.js"></script>
+    <script src="~/Scripts/custom.min.js"></script>
+</body>
+</html>

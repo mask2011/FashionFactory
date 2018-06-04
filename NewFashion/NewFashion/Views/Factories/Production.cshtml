@@ -1,0 +1,67 @@
+﻿@model NewFashion.ViewModels.FactoryProduction
+
+@{
+    ViewBag.Title = "Production";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (!String.IsNullOrEmpty(ViewBag.Message))
+        {
+<div id="message" class="btn btn-block btn-primary">
+    @ViewBag.Message
+</div>
+        }
+
+<div id="titles">
+    <h2>Daily Production Statistics</h2>
+
+    <h4>Total Amount of Daily Production: 600 Products</h4>
+</div>
+
+<img id="imgProduction" src="~/Images/products-01.png" sizes="small" class="img-responsive"/>
+<h4><strong>T-Shirts:</strong> 5 different Sizes Available in 5 different Colors</h4>
+<h4><strong>Trousers:</strong> 5 different Sizes Available in 3 different Colors</h4>
+
+
+@using (Html.BeginForm("Production", "Factories"))
+{
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Authorize" class="btn btn-success" />
+        </div>
+    </div>
+}
+
+<div id="customText">For Customized Production please click the button:</div>
+<input id="customRedirect" type="button" value="Custom Production" class="btn btn-sm btn-info"
+       onclick="@("window.location.href='" + @Url.Action("CustomProduction", "Factories") + "'");" />
+
+
+@section scripts
+{
+
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<style>
+    #titles {
+        margin-left: 20px;
+    }
+
+    #imgProduction {
+        float: left;
+        margin-bottom: -20px;
+    }
+
+
+    #customText {
+        float: left;
+        margin-right: 10px;
+        margin-top: 5px;
+    }
+
+
+    #customRedirect {
+        float: none;
+    }
+</style>

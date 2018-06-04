@@ -1,0 +1,189 @@
+﻿
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: 100%;
+}*/
+
+.form-title h3 {
+    text-align: center;
+    display: block;
+    padding-top: 20px;
+}
+
+section#loginForm {
+    width: 45%;
+    height: 100%;
+    border-radius: 4px;
+    position: relative;
+    top: 50px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    box-shadow: 0 10px 13px 0 rgba(0,0,0,0.2),0 6px 15px 0 rgba(0,0,0,0.19) !important;
+}
+
+
+section#RegisterForm {
+    width: 70%;
+    height: 100%;
+    border-radius: 4px;
+    position: relative;
+    top: 50px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    box-shadow: 0 10px 13px 0 rgba(0,0,0,0.2),0 6px 15px 0 rgba(0,0,0,0.19) !important;
+}
+
+.myloginform, .myRegisterform {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.supplier p {
+    text-align: center;
+}
+
+.supplier {
+    margin-bottom: 40px;
+}
+
+
+.btn-login {
+    width: 100%;
+    color: #fff;
+    background-color: #00c292;
+    border-color: #00c292;
+}
+
+
+
+    .btn-login:hover {
+        color: #fff;
+        background-color: #009c75;
+        -webkit-transition: all 0.3s ease-out;
+        transition: all 0.3s ease-out;
+        border-color: #008f6c;
+        
+    }
+
+
+.regpad{
+    margin-bottom:30px;
+}
+
+.popup {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+    .popup p {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+
+
+/*start title for sales*/
+
+
+.top {
+    height: 45px;
+}
+
+.title {
+    width: 50%;
+    float: left;
+}
+
+
+.createnew {
+    width: 50%;
+    float: right;
+    height: 100%;
+}
+
+    .createnew p {
+        text-align: right;
+    }
+
+
+
+
+    .createnew a {
+        color: white;
+        font-size: 15px;
+        background: #03a9f3;
+        padding: 8px;
+        position: relative;
+        top: 10px;
+        border-radius: 5px;
+    }
+
+/* css pagination*/
+
+.pagination {
+    display: flex;
+    position: absolute;
+    padding-left: 0;
+    right: 21px;
+    bottom: 0px;
+}
+
+ul.pagination a {
+    font-size: 20px;
+    padding: 10px;
+}
+
+.input-validation-error {
+    border: 2px solid red;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width:767px) {
+    #loginForm , #RegisterForm {
+                width: 100%;
+            }
+}
+

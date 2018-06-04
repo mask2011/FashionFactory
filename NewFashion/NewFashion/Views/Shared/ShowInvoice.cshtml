@@ -1,0 +1,134 @@
+﻿@model NewFashion.ViewModels.InvoiceViewModel
+
+@{
+    ViewBag.Title = "ShowInvoice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-body printableArea">
+            <h3><b>INVOICE</b> <span class="pull-right data-invoiceId">@Html.DisplayFor(model => model.InvoiceId)</span></h3>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left">
+                        <address style="margin-top:10px">
+                            <h3><b>DALL' ARPI</b></h3>
+                            <p class="text-muted m-l-5">
+                                12th Avenue,
+                                <br /> 5th block,
+                                <br /> Athens,
+                                <br /> Tel: +(30) 1234567567 e-mail: info@dallarpiwear.com
+                            </p>
+                        </address>
+                    </div>
+                    <div class="pull-right text-right">
+                        <p class="m-t-30"><b>Invoice Date :</b> <i class="fa fa-calendar"></i> @Html.DisplayFor(model => model.DateTime)</p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responsive m-t-40" style="clear: both;">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Product Code</th>
+                                    <th class="text-left"> Description</th>
+                                    <th class="text-left"> Gender</th>
+                                    <th class="text-left"> Size</th>
+                                    <th class="text-left"> Color</th>
+                                    <th class="text-left"> Quantity</th>
+                                    <th class="text-left">Price</th>
+                                    <th class="text-left">Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in Model.ProductSaleViewModels)
+                                {
+                                <tr class="mycontainer">
+                                    <td class="text-left data-productId">@Html.DisplayFor(modelItem => product.ProductId)</td>
+                                    <td>@Html.DisplayFor(modelItem => product.Type)</td>
+                                    <td class="text-left"> @Html.DisplayFor(modelItem => product.Gender) </td>
+                                    <td class="text-left"> @Html.DisplayFor(modelItem => product.Size) </td>
+                                    <td>@Html.DisplayFor(modelItem => product.Color)</td>
+                                    <td class="text-center"> @Html.DisplayFor(modelItem => product.Quantity) </td>
+                                    <td class="text-left"> @Html.DisplayFor(modelItem => product.Price)</td>
+                                    <td class="text-left product-total-price"> @Html.DisplayFor(modelItem => product.TotalPrice)</td>
+                                    <td><button id="btnId" style="margin-top: 33px;" class="btn btn-sm btn-danger hide-on-print js-remove-from-sale hide">-</button></td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="pull-right m-t-30 text-right">
+                        <h3 class="total-count"><b>Total:</b> @Html.DisplayFor(model => model.TotalPrice)</h3>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
+                    <div class="text-right" style="margin-top:20px">
+                        <button id="print" class="btn hide-on-print btn-danger" type="button"><span><i class="fa fa-print"></i> Print</span> </button>
+                        <button class="btn btn-warning hide-on-print edit-sale">Edit</button>
+                        @Html.ActionLink("Back to List", "Index", null, new { @class = "hide-on-print" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#print").click(function () {
+                var mode = 'iframe';
+                var close = mode == "popup";
+                var options = {
+                    mode: mode,
+                    popClose: close
+                };
+                $(".hide-on-print").addClass("hide");
+                $("div.printableArea").printArea(options);
+                window.onblur = function () { window.onfocus = function () { location.reload(true) } };
+            });
+
+            $(document).on('click', '.edit-sale', function () {
+                $(".js-remove-from-sale").toggleClass("hide");
+            });
+
+            $(document).on('click', '.js-remove-from-sale', function (e) {
+                var button = $(e.target);
+                var productId = $(button).closest('tr').find("td.data-productId");
+                var data = new Object();
+                data.InvoiceId = $('.data-invoiceId').text();
+                data.ProductId = productId.text();
+
+                $.ajax({
+                    url: "/sale/deleteItemFromSale",
+                    method: "delete",
+                    async: false,
+                    data: data
+                })
+                    .done(function () {
+                        $(button).closest('.mycontainer').remove();
+                        var total = 0;
+                        $("td.product-total-price").each(function () {
+                            var text = $(this).text();
+                            text = text.replace(/\D*/, "")
+                            var productPrice = parseInt(text);
+                            total += productPrice;
+                        })
+
+                        $(".total-count").text("Total: " + total + ".00");
+
+                        return false;
+                    })
+                    .fail(function () {
+                        console.log("Something Failed")
+                    })
+            });
+        });
+    </script>
+}

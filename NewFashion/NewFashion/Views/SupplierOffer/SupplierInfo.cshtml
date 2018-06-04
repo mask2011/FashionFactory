@@ -1,0 +1,24 @@
+﻿@model IEnumerable<NewFashion.Models.ApplicationUser>
+@{
+    ViewBag.Title = "Supplier Info";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Supplier Info</title>
+</head>
+<body>
+    <div class="container">
+        <h4 style=" text-align:center;border-bottom:1px solid #808080">Supplier Info</h4>
+        @foreach (var item in Model)
+        {
+            <p><label>Email : </label> @item.Email</p>
+            <p><label>Phone : </label> @item.PhoneNumber</p>
+        }
+    </div>
+</body>
+</html>

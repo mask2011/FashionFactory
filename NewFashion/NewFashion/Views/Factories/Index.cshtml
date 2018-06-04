@@ -1,0 +1,53 @@
+﻿@model IEnumerable<NewFashion.Models.Facilities.Factory>
+
+@{
+    ViewBag.Title = "Product Logs";
+}
+
+<h2>Product Logs</h2>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table table-responsive">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ClothesDailyProdutionLog)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TrousersDailyProdutionLog)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClothesDailyProdutionLog)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrousersDailyProdutionLog)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.FactoryID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.FactoryID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.FactoryID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+    <img class="btn btn-xs img-responsive" src="~/Content/Images/employees.jpg" title="Employees"
+         onclick="@("window.location.href='" + @Url.Action("Employees", "Factories") + "'");" />
+    <img class="btn btn-xs img-responsive" src="~/Content/Images/supplies.jpg" title="Supplies"
+         onclick="@("window.location.href='" + @Url.Action("Supplies", "Factories") + "'");" />
+    <img class="btn btn-xs img-responsive" src="~/Content/Images/production.jpg" title="Production"
+         onclick="@("window.location.href='" + @Url.Action("Production", "Factories") + "'");" />
+    <img class="btn btn-xs img-responsive" src="~/Content/Images/stock.jpg" title="Stock"
+         onclick="@("window.location.href='" + @Url.Action("Stock", "Factories") + "'");" />
+
+
+

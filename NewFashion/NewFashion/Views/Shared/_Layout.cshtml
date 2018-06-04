@@ -1,0 +1,294 @@
+﻿@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Dall' Arpi</title>
+    <link rel="icon" type="/image/png" sizes="16x16" href="../images/favicon.png">
+
+    <!-- chartist CSS -->
+    <link href="~/Content/morris.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="~/Content/style.min.css" rel="stylesheet">
+    <!-- Dashboard 1 Page CSS -->
+    <link href="~/Content/dashboard1.css" rel="stylesheet">
+
+    @Styles.Render("~/Content/Site.css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+
+<body class="skin-default fixed-layout">
+
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <!-- ============================================================== -->
+                <!-- Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="@Url.Action("Index" , "Home")">
+                        <b>
+                            <img src="~/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                        </b>
+                        <span>
+                            <img src="~/images/logo-text.png" alt="homepage" class="dark-logo" />
+                        </span>
+                    </a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav mr-auto">
+                        <!-- This is  -->
+                        <li class="nav-item"> <a class="nav-link nav-toggler d-block d-sm-none waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <li class="nav-item"> <a class="nav-link sidebartoggler d-none d-lg-block d-md-block waves-effect waves-dark" href="javascript:void(0)"><i class="icon-menu"></i></a> </li>
+
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- User profile
+                    <!-- ============================================================== -->
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- User Profile-->
+                <div class="user-profile">
+                    <div class="user-pro-body">
+                        <div><img src="~/images/2.jpg" alt="user-img" class="img-circle"></div>
+
+                        <ul class="nav navbar-nav navbar-right">
+
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle u-dropdown link hide-menu" data-toggle="dropdown" role="menu" aria-haspopup="true" aria-expanded="false">  @User.Identity.GetUserName() <span class="caret"></span></a>
+                                <ul class="dropdown-menu animated flipInY">
+                                    <li class="dropdown-item"><a href="@Url.Action("Attending" , "Gig")"><i class="icon-user"></i> Profile</a></li>
+                                    <li class="dropdown-item"><a href="@Url.Action("Attending" , "Gig")"><i class="icon-pencil"></i>Edit Profile</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="@Url.Action("Index" , "Home")" class=" waves-effect waves-dark" aria-expanded="false"><i class="icon-home"></i><span class="hide-menu">Home</span></a>
+                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li>
+                                <a class="has-arrow waves-effect waves-dark" href="@Url.Action("Index", "Factories")" aria-expanded="false"><i class="icon-calender"></i><span class="hide-menu">Factory</span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li>@Html.ActionLink("Logs", "Index", "Factories")</li>
+                                    <li>@Html.ActionLink("Employees", "Employees", "Factories")</li>
+                                    <li>@Html.ActionLink("Supplies", "Supplies", "Factories")</li>
+                                    <li>@Html.ActionLink("Production", "Production", "Factories")</li>
+                                    <li>@Html.ActionLink("Stock", "Stock", "Factories")</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Store</span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li>@Html.ActionLink("All Sales", "Index", "Sale")</li>
+                                    <li>@Html.ActionLink("Stock", "Stock", "Store")</li>
+                                    <li>@Html.ActionLink("Sellers", "Index", "ApplicationUser")</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="icon-screen-desktop"></i><span class="hide-menu">E-Shop</span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="#">Sales</a></li>
+                                    <li><a href="#">Orders</a></li>
+                                    <li><a href="#">Customer</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="icon-people"></i><span class="hide-menu">Suppliers</span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li class="notifications">
+                                        <span style="cursor: pointer;" class="badge badge-pill badge-cyan ml-auto js-notifications-read js-notification-count"></span>
+                                        @Html.ActionLink("All Offers", "AllOffers", "SupplierOffer")
+                                    </li>
+                                    <li>@Html.ActionLink("Selected Offers", "SelectedOffers", "SupplierOffer")</li>
+                                    <li>@Html.ActionLink("Supplier Offer", "Create", "SupplierOffer")</li>
+                                    <li>@Html.ActionLink("Suppliers", "Suppliers", "SupplierOffer")</li>
+                                </ul>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Supplier"))
+                        {
+                            <li>
+                                <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="icon-people"></i><span class="hide-menu">My Offers</span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li>@Html.ActionLink("My Offers", "AllOffers", "SupplierOffer")</li>
+                                    <li>@Html.ActionLink("New Offer", "Create", "SupplierOffer")</li>
+                                </ul>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Seller"))
+                        {
+                            <li>
+                                <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="icon-screen-desktop"></i><span class="hide-menu">Sales Screen</span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li> @Html.ActionLink("Seller Form", "Create", "Sale")</li>
+                                    <li>@Html.ActionLink("All Sales", "Index", "Sale")</li>
+                                </ul>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li>
+                                <a href="@Url.Action("RegisterUser" , "Account")" class=" waves-effect waves-dark" aria-expanded="false"><i class="icon-user"></i><span class="hide-menu">Register User</span></a>
+                            </li>
+                        }
+
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <div class="container page-wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        @if (ViewContext.RouteData.Values["controller"].ToString() == "Home")
+                        {
+                            <li class="change-padding"><a href="@Url.Action("Index", "Home")">Home</a></li>
+                        }
+
+                        @if (ViewContext.RouteData.Values["controller"].ToString() != "Home")
+                        {
+                            string arrow = " > ";
+                            <li class="change-padding"><a href="@Url.Action("Index", "Home")">Home</a></li>
+                            string check = ViewContext.RouteData.Values["controller"].ToString();
+                            switch (check)
+                            {
+                                case "SuppliesOffer":
+                                    check = "Suppliers";
+                                    break;
+                                default:
+                                    break;
+                            }
+                            <li class="change-padding"><p> @arrow.ToString()</p></li>
+                            <li class="change-padding"><a href="#">@check</a></li>
+
+                            if (ViewContext.RouteData.Values["action"].ToString() != "Index")
+                            {
+                                <li class="change-padding"><p> @arrow.ToString()</p></li>
+                                <li class="change-padding"><a href="@Url.Action(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString())">@ViewContext.RouteData.Values["action"].ToString()</a></li>@*@Html.Label(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString())*@
+
+                            }
+                        }
+                    </ol>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    @RenderBody()
+                </div>
+            </div>
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - DALL' ARPI Wear - Administration</p>
+            </footer>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    @*<script src="~/Scripts/jquery-3.2.1.min.js"></script>*@
+    <!-- Bootstrap popper Core JavaScript -->
+    <script src="~/Scripts/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="~/Scripts/perfect-scrollbar.jquery.min.js"></script>
+    <!--Wave Effects -->
+    <script src="~/Scripts/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="~/Scripts/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="~/Scripts/custom.min.js"></script>
+    <!-- ============================================================== -->
+    <!-- This page plugins -->
+    <!-- ============================================================== -->
+    <!--morris JavaScript -->
+    <script src="~/Scripts/raphael-min.js"></script>
+    <script src="~/Scripts/morris.min.js"></script>
+    <script src="~/Scripts/jquery.sparkline.min.js"></script>
+    <script src="~/Scripts/jquery.PrintArea.js"></script>
+    <script src="~/Scripts/Addrow.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.get("/api/Notifications/GetNewNotifications", function (notifications) {
+                $(".js-notification-count")
+                    .text(notifications.length)
+                    .removeClass("hide")//βγάζω το hide όταν έχουν έρθει τα δεδομένα.
+            })
+            $(".js-notifications-read").click(function (e) {
+                var link = $(e.target);
+                var dialog = bootbox.dialog({
+                    title: 'Confirm',
+                    message: "Mark all Offers as read?",
+                    buttons: {
+                        no: {
+                            label: "No",
+                            className: 'btn-default',
+                            callback: function () {
+                                bootbox.hideAll();
+                            }
+                        },
+                        yes: {
+                            label: "Yes",
+                            className: 'btn-danger',
+                            callback: function () {
+                                $.post("/api/notifications/MarkAsRead")
+                                    .done(function () {
+                                        $(".js-notifications-read")
+                                            .addClass("hide")
+                                    })
+                                    .fail(function () {
+                                        console.log("Something Failed");
+                                    });
+                            }
+                        }
+                    }
+                })
+            })
+        });
+    </script>
+    <!-- Chart JS -->
+    @*<script src="~/Scripts/dashboard1.js"></script>*@
+
+</body>
+</html>

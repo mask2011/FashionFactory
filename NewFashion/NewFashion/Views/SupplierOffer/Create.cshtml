@@ -1,0 +1,115 @@
+﻿@model NewFashion.Models.SupplierOffer
+
+@{
+    ViewBag.Title = "Supplier Offer Form";
+}
+
+<h2>Supplier Offer Form</h2>
+
+@using (Html.BeginForm("Create", "SupplierOffer"))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(u => u.SupplierID)
+    @Html.HiddenFor(u => u.IsSelected)
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row">
+            <div class="col-md-7">
+                @Html.LabelFor(model => model.Cloth, htmlAttributes: new { @class = "control-label col-sm-2 col-md-2" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Cloth, new { htmlAttributes = new { @class = "form-control col-sm-6 col-md-8" } })
+                    @Html.ValidationMessageFor(model => model.Cloth, "", new { @style = "display:inherit", @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-5" style="margin-left:0;">
+                @Html.LabelFor(model => model.PricePerMeter, htmlAttributes: new { @class = "control-label col-sm-10 col-md-5" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.PricePerMeter, new { htmlAttributes = new { @class = "form-control col-sm-2 col-md-4" } })
+                    @Html.ValidationMessageFor(model => model.PricePerMeter, "", new { @style = "display:inherit", @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7">
+                @Html.LabelFor(model => model.Buttons, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Buttons, new { htmlAttributes = new { @class = "form-control col-md-8" } })
+                    @Html.ValidationMessageFor(model => model.Buttons, "", new { @style = "display:inherit", @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-5">
+                @Html.LabelFor(model => model.PricePerButton, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.PricePerButton, new { htmlAttributes = new { @class = "form-control col-md-4" } })
+                    @Html.ValidationMessageFor(model => model.PricePerButton, "", new { @style = "display:inherit", @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7">
+                @Html.LabelFor(model => model.Stickers, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Stickers, new { htmlAttributes = new { @class = "form-control col-md-8" } })
+                    @Html.ValidationMessageFor(model => model.Stickers, "", new { @style = "display:inherit", @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-5">
+                @Html.LabelFor(model => model.PricePerSticker, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.PricePerSticker, new { htmlAttributes = new { @class = "form-control col-md-4" } })
+                    @Html.ValidationMessageFor(model => model.PricePerSticker, "", new { @style = "display:inherit", @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7">
+                @Html.LabelFor(model => model.Thread, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Thread, new { htmlAttributes = new { @class = "form-control col-md-8" } })
+                    @Html.ValidationMessageFor(model => model.Thread, "", new { @style = "display:inherit", @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-5">
+                @Html.LabelFor(model => model.PricePerThread, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.PricePerThread, new { htmlAttributes = new { @class = "form-control col-md-4" } })
+                    @Html.ValidationMessageFor(model => model.PricePerThread, "", new { @style = "display:inherit", @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7">
+                @Html.LabelFor(model => model.Zipper, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Zipper, new { htmlAttributes = new { @class = "form-control col-md-8" } })
+                    @Html.ValidationMessageFor(model => model.Zipper, "", new { @style = "display:inherit", @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-5">
+                @Html.LabelFor(model => model.PricePerZipper, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="form-group">
+                    @Html.EditorFor(model => model.PricePerZipper, new { htmlAttributes = new { @class = "form-control col-md-4" } })
+                    @Html.ValidationMessageFor(model => model.PricePerZipper, "", new { @style = "display:inherit", @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Submit" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "AllOffers")
+</div>

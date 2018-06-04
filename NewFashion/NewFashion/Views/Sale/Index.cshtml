@@ -1,0 +1,61 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<NewFashion.Models.Sale>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="top">
+    <div class="title">
+        <h2>All sales</h2>
+    </div>
+    <div class="createnew">
+        <p>
+            <a href="@Url.Action("Create" , "Sale")"><i class="fa fa-plus-circle"></i> New Sale</a>
+        </p>
+    </div>
+</div>
+
+<table class="table color-table-bordered info-borded-table table-striped">
+    <tr>
+        <th>
+            Serial Number
+        </th>
+        <th>
+            Gender
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+            Price
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td></td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td></td>
+            <td></td>
+            <td>
+                @Html.ActionLink("Invoice", "ShowInvoice", new { id = item.Id }, new { @class = "btn , btn-primary" })
+            </td>
+        </tr>
+    }
+</table>
+<hr />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+<div class="mypagination">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), PagedListRenderOptions.Classic)
+</div>
+

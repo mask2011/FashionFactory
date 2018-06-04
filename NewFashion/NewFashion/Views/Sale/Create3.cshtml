@@ -1,0 +1,236 @@
+﻿@model NewFashion.ViewModels.SalesFormViewModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Create3";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Sale</h2>
+<hr />
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="row">
+    <div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.InvoiceId, htmlAttributes: new { @class = "control-label col-md-8" })
+            @Html.EditorFor(model => model.InvoiceId, new { htmlAttributes = new { @id = "invoiceId", @class = "form-control data-invoiceId  col-md-8" } })
+            @Html.ValidationMessageFor(model => model.InvoiceId, " ", new { @style = "display:inherit", @class = "text-danger hide col-md-12" })
+        </div>
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.DateTime, htmlAttributes: new { @class = "control-label col-md-8" })
+        <div class="form-group">
+            @Html.EditorFor(model => model.DateTime, new { htmlAttributes = new { @id = "dateId", @class = "form-control data-dateTime col-md-10" } })
+            @Html.ValidationMessageFor(model => model.DateTime, " ", new { @style = "display:inherit", @class = "text-danger hide col-md-12" })
+        </div>
+    </div>
+</div>
+
+<table class="table table-responsive">
+    <tr class="mycontainer" id="mainrow">
+        <td>
+            @Html.LabelFor(m => m.ProductType, htmlAttributes: new { @class = "control-label col-md-8" })
+            @Html.DropDownListFor(m => m.ProductType, Enum.GetNames(typeof(NewFashion.Models.Enums.ProductType))
+                                                                                                           .Select(e => new SelectListItem { Text = e }), new { @id = "productCategory", @class = "pc form-control col-md-8", @onchange = "LoadProduct()" })
+            @Html.ValidationMessageFor(model => model.ProductType, "", new { @style = "display:inherit", @class = "text-danger hide col-md-8" })
+        </td>
+        <td>
+            @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label col-md-8" })
+            @Html.DropDownListFor(m => m.ProductId, new SelectList(""), "--Select Product--", new { @id = "productId", @class = "productId form-control col-md-8" })
+            @Html.ValidationMessageFor(model => model.ProductId, "", new { @style = "display:inherit", @class = "text-danger hide col-md-8" })
+        </td>
+        <td>
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @id = "quantityId", @class = "form-control data-quantity col-md-6", @onchange = "CheckStock()" } })
+            @Html.ValidationMessageFor(m => m.Quantity, String.Empty, new { @style = "display:inherit", @id = "quantityCheck", @class = "text-danger hide col-md-8" })
+        </td>
+        <td>
+            <button id="btnId" style="margin-top: 33px;" class="btn btn-lg btn-success js-add-to-sale">+</button>
+        </td>
+    </tr>
+</table>
+
+<h3>Chosen Items</h3>
+<div id="orderItems">
+    <table class="table table-responsive" id="orderdetailsItems"></table>
+    <span id="orderItemError" style="color:red"></span>
+</div>
+
+<div>
+    <a href='#' onclick='navigate();'>
+        <input type="button" class="btn btn-success" value='Checkout' />
+    </a>
+    @Html.ActionLink("Cancel Sale", "Create", "Sale")
+</div>
+
+@section scripts
+{
+    <script>
+        //fetch products
+        function LoadProduct() {
+            var productType = $("#productCategory option:selected").val() == "T_Shirt" ? 0 : 1;
+            $.ajax({
+                type: "GET",
+                url: "/sale/getProducts",
+                data: { 'productType': productType },
+                success: function (data) {
+                    //render products to appropriate dropdown
+                    renderProduct($('.mycontainer').find('select#productId'), data);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        };
+
+        function CheckStock() {
+            var quantity = $("#quantityId").val();
+            var productId = $("#productId").val();
+            $.ajax({
+                type: "GET",
+                url: "/sale/isProductInStock",
+                data: {
+                    'quantity': quantity,
+                    'productId': productId
+                },
+                success: function (data) {
+                    if (data.checkStock == false) {
+                        $("span#quantityCheck").removeClass("hide").text("Not Available. Qty In Stock: " + data.availableQuantity)
+                        return false;
+                    }
+                    else {
+                        $("span#quantityCheck").addClass("hide")
+                        return true;
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        };
+
+        function renderProduct(element, data) {
+            //render product
+            var $ele = $(element);
+            $ele.empty();
+            $.each(data, function (i, val) {
+                $ele.append($('<option/>').val(val).text(val));
+            })
+        };
+
+        function navigate() {
+            //Grab your values
+            var id = $(".data-invoiceId").val();
+
+            //Perform your navigation
+            window.location.href = "/Sale/ShowInvoice/" + id;
+        }
+
+        $(".js-add-to-sale").click(function (e) {
+
+            var button = $(e.target);
+            var data = new Object();
+            data.InvoiceId = $('.data-invoiceId').val();
+            data.DateTime = $('.data-dateTime').val();
+            data.ProductId = $('#productId').val();
+            data.Quantity = $('#quantityId').val();
+
+            var isAllValid = true;
+            var invoiceId = $('#invoiceId').val();
+            var dateId = $('#dateId').val();
+            var quantityId = $("#quantityId").val();
+            var quantityErrorMessage = $("span#quantityCheck").hasClass("hide");
+
+            if (invoiceId === "") {
+                isAllValid = false;
+                $('#invoiceId').siblings('span').removeClass("hide").text("InvoiceId is Required");
+            }
+
+            if (dateId == "") {
+                isAllValid = false;
+                $('#dateId').siblings('span').removeClass("hide").text("Date is Required");
+            }
+
+            if ($('#productCategory option:selected').text() == " ") {
+                isAllValid = false;
+                $('#productCategory').siblings('span').removeClass("hide").text("Product Category is Required");
+            }
+
+            if ($('#productId option:selected').text() == "--Select Product--" || $('#productId option:selected').text() == " ") {
+                isAllValid = false;
+                $('#productId').siblings('span').removeClass("hide").text("Product Id is Required");
+            }
+
+            if (quantityId == "0" || !quantityErrorMessage) {
+                isAllValid = false;
+            }
+            
+            if (isAllValid) {
+
+                $.ajax({
+                    url: "/sale/saveOrder",
+                    method: "post",
+                    async: false,
+                    data: data
+                })
+                    .done(function () {
+                        var $newRow = $('#mainrow').clone().removeAttr('id');
+                        $('.pc', $newRow).val($('#productCategory').val());
+                        $('.productId', $newRow).val($('#productId').val());
+                        $('.js-data-to-checkout').data($(".data-invoiceId").val());
+
+                        //Replace add button with remove button
+                        var text = button.text() === "+" ? "-" : "+";
+                        $('#btnId', $newRow)
+                            .removeClass("btn-success").addClass("btn-danger")
+                            .addClass("js-remove-from-sale").removeClass("js-add-to-sale")
+                            .text(text);
+
+                        //remove id attribute from new clone row
+                        $('#productCategory,#productId,#quantityId,#btnId', $newRow).removeAttr('id');
+                        $('span.error', $newRow).remove();
+                        //append clone row
+                        $('#orderdetailsItems').append($newRow);
+
+                        //clear select data
+                        $('#productCategory,#productId').val('0');
+                        $('#quantityId').val('');
+                        $('#orderItemError').empty();
+                    })
+                    .fail(function () {
+                        console.log("Something Failed")
+                    })
+            }
+            else {
+                bootbox.alert("Please check the required fields")
+            }
+        });
+
+        $(document).on('click', '.js-remove-from-sale', function (e) {
+            var button = $(e.target);
+            var productId = $(button).closest('#orderdetailsItems').find('select.productId');
+            var data = new Object();
+            data.InvoiceId = $('.data-invoiceId').val();
+            data.ProductId = productId.val();
+
+            $.ajax({
+                url: "/sale/deleteItemFromSale",
+                method: "delete",
+                async: false,
+                data: data
+            })
+                .done(function () {
+                    $(button).closest('.mycontainer').remove();
+                    return false;
+                })
+                .fail(function () {
+                    console.log("Something Failed")
+                })
+        });
+    </script>
+}
+
+
+

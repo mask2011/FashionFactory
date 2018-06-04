@@ -1,0 +1,91 @@
+﻿@model NewFashion.Models.SupplierOffer
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SuppliesOffer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Supplier.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Supplier.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cloth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cloth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PricePerMeter)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PricePerMeter)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Buttons)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Buttons)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PricePerButton)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PricePerButton)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Stickers)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Stickers)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PricePerSticker)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PricePerSticker)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Thread)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Thread)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PricePerThread)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PricePerThread)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

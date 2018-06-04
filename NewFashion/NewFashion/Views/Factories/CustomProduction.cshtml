@@ -1,0 +1,136 @@
+﻿@model NewFashion.ViewModels.FactoryProduction
+
+@{
+    ViewBag.Title = "Customized Production";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Customized Production</h2>
+<h6 id="descrText">Please enter Quantity and Select the type of Product you want to create</h6>
+
+<div class="container">
+
+
+    @using (Html.BeginForm("CustomProduction", "Factories"))
+    {
+        if (!String.IsNullOrEmpty(Model.Message))
+        {
+            <div id="message" class="btn btn-block btn-primary">
+                @Model.Message
+            </div>
+        }
+
+
+        @Html.AntiForgeryToken()
+
+        <div>
+            <div class="row">
+
+                <div data-role="dynamic-fields">
+                    <div class="form-inline">
+
+                        <div id="quantity">
+                            @Html.LabelFor(model => Model.Quantity)
+                            <div id="quantityField">
+                                @Html.EditorFor(modelItem => Model.Quantity, new { htmlAttributes = new { @style = "width: 100px", @class = "form-control", autofocus = "autofoocus" } })
+                            </div>
+
+                            @Html.ValidationMessageFor(modelItem => Model.Quantity, String.Empty, new { @class = "text-danger" })
+                        </div>
+
+                        <div class="textMenu">
+                            @Html.LabelFor(modelItem => Model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="dropMenu">
+                                @Html.EnumDropDownListFor(modelItem => modelItem.Gender, htmlAttributes: new { @class = "form-control" })
+                            </div>
+
+                            @Html.ValidationMessageFor(modelItem => Model.Gender, String.Empty, new { @class = "text-danger" })
+                        </div>
+                        <div class="textMenu">
+                            @Html.LabelFor(modelItem => Model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="dropMenu">
+                                @Html.EnumDropDownListFor(modelItem => modelItem.Type, htmlAttributes: new { @class = "form-control" })
+                            </div>
+
+                            @Html.ValidationMessageFor(modelItem => Model.Type, String.Empty, new { @class = "text-danger" })
+                        </div>
+                        <div class="textMenu">
+                            @Html.LabelFor(modelItem => Model.Size, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="dropMenu">
+                                @Html.EnumDropDownListFor(modelItem => modelItem.Size, htmlAttributes: new { @class = "form-control" })
+                            </div>
+
+                            @Html.ValidationMessageFor(modelItem => Model.Size, String.Empty, new { @class = "text-danger" })
+                        </div>
+                        <div class="textMenu">
+                            @Html.LabelFor(modelItem => Model.Color, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="dropMenu">
+                                @Html.EnumDropDownListFor(modelItem => modelItem.Color, htmlAttributes: new { @class = "form-control" })
+                            </div>
+
+                            @Html.ValidationMessageFor(modelItem => Model.Color, String.Empty, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <input id="proceedButton" type="submit" value="Proceed" class="btn btn-success" />
+
+    }
+
+
+    <input id="backToProduction" type="button" value="< Back to Production" class="btn btn-primary btn-sm"
+           data-dismiss="alert" aria-label="Close"
+           onclick="@("window.location.href='" + @Url.Action("Production", "Factories") + "'");" />
+
+</div>
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+<style>
+    #descrText {
+        margin-top: 10px;
+        margin-bottom: 40px;
+    }
+
+    #message {
+        margin-bottom: 20px;
+    }
+
+    #quantity {
+        margin-top: -2px;
+        float: left;
+    }
+
+    #quantityField {
+        width: 85px;
+        /*margin-top: 9px;
+        float: right;*/
+    }
+
+    .textMenu {
+        margin-left: 40px;
+    }
+
+    .dropMenu {
+        margin-left: -18px;
+    }
+
+    #proceedButton {
+        margin-top: 20px;
+        float: none;
+    }
+
+    #backToProduction {
+        margin-top: 20px;
+        float: none;
+    }
+</style>

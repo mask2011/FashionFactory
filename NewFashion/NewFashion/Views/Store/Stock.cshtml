@@ -1,0 +1,72 @@
+﻿@model IEnumerable<NewFashion.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Stock</h2>
+@using (Html.BeginForm())
+{
+    <p>
+        <div class="row">
+            <div class="col-md-3">
+                Choose ProductId: @Html.DropDownList("serialNumber", null, "ALL", new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                Type: @Html.TextBox("searchString", null, new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary" style="margin-top: 22px;" type="submit"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Size)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Color)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.StoreQuantity)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Size)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Color)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StoreQuantity)
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,152 @@
+﻿@model IEnumerable<NewFashion.Models.SupplierOffer>
+
+@{
+    ViewBag.Title = "All Offers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>All Offers</h2>
+<div class="container">
+    <table class="table table-hover table-condensed table-responsive">
+        <tr>
+            <th>
+                Supplier Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cloth)
+                <hr class="reset-margin" />
+                @Html.DisplayNameFor(model => model.PricePerMeter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Buttons)
+                <hr class="reset-margin" />
+                @Html.DisplayNameFor(model => model.PricePerButton)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stickers)
+                <hr class="reset-margin" />
+                @Html.DisplayNameFor(model => model.PricePerSticker)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Thread)
+                <hr class="reset-margin" />
+                @Html.DisplayNameFor(model => model.PricePerThread)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zipper)
+                <hr class="reset-margin" />
+                @Html.DisplayNameFor(model => model.PricePerZipper)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="#" data-toggle="popover" data-trigger="hover" id="@item.Supplier.Id">
+                        @Html.DisplayFor(modelItem => item.Supplier.FullName, new { @class = "change-margin"} )
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cloth)
+                    <hr class="reset-margin" />
+                    @Html.DisplayFor(modelItem => item.PricePerMeter)&euro;
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Buttons)
+                    <hr class="reset-margin" />
+                    @Html.DisplayFor(modelItem => item.PricePerButton)&euro;
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stickers)
+                    <hr class="reset-margin" />
+                    @Html.DisplayFor(modelItem => item.PricePerSticker)&euro;
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Thread)
+                    <hr class="reset-margin" />
+                    @Html.DisplayFor(modelItem => item.PricePerThread)&euro;
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Zipper)
+                    <hr class="reset-margin" />
+                    @Html.DisplayFor(modelItem => item.PricePerZipper)&euro;
+                </td>
+                <td>
+                    @if (!item.IsSelected && !User.IsInRole("Supplier"))
+                    {
+                        <button data-offer-id="@item.Id" class="btn btn-info btn-sm js-toggle-selection change-margin">Select</button>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="popover"]').popover({
+                title: setData,
+                html: true,
+                placement: 'right'
+
+            });
+            function setData(id) {
+                var set_data = '';
+                var element = $(this);
+                var id = element.attr("id");
+                $.ajax({
+                    url: "/SupplierOffer/SupplierInfo?" + id,
+                    method: "post",
+                    async: false,
+                    data: { id: id },
+                    success: function (data) {
+                        set_data = data;
+                    }
+
+                });
+                return set_data;
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $(".js-toggle-selection").click(function (e) {
+                var button = $(e.target);
+                var dialog = bootbox.dialog({
+                    title: 'Confirm',
+                    message: "Select Offer? Cannnot be undone!",
+                    buttons: {
+                        no: {
+                            label: "No",
+                            className: 'btn-default',
+                            callback: function () {
+                                bootbox.hideAll();
+                            }
+                        },
+                        yes: {
+                            label: "Yes",
+                            className: 'btn-danger',
+                            callback: function () {
+                                $.post("/api/supplies", { offerId: button.attr("data-offer-id") })
+                                    .done(function () {
+                                        $(button).addClass("hide");
+                                        console.log("Success!!!");
+                                    })
+                                    .fail(function () {
+                                        alert("Something Failed!");
+                                    });
+                            }
+                        }
+                    }
+                })
+                
+            });
+        });
+    </script>
+}

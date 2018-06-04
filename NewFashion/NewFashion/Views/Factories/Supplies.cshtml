@@ -1,0 +1,59 @@
+﻿@model IEnumerable<NewFashion.ViewModels.FactorySumSupplies>
+
+@{
+    ViewBag.Title = "Supplies";
+}
+
+<h2>Supplies</h2>
+<h5>Here you can see Summarized Supplies from Selected Offers</h5>
+
+<table class="table table-responsive">
+    <tr>
+        <th>
+            Buttons
+        </th>
+        <th>
+            Cloth
+        </th>
+        <th>
+            Stickers
+        </th>
+        <th>
+            Thread
+        </th>
+        <th>
+            Zippers
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Buttons)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cloth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stickers)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Thread)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Zipper)
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+<hr />
+<h6>If you wanna see all Selected Offers click the button below:</h6>
+<input id="goToOffers" type="button" value="Go to Selected Offers" class="btn btn-primary btn-sm"
+       data-dismiss="alert" aria-label="Close"
+       onclick="@("window.location.href='" + @Url.Action("SelectedOffers", "SupplierOffer") + "'");" />
+
+
